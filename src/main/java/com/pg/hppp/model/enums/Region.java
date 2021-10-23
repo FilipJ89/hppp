@@ -12,5 +12,5 @@ public enum Region {
     MEA("Middle East Africa"),
     LA("Latin America");
 
-    private final String regionFullName;
+    private final String regionLabel;
 }

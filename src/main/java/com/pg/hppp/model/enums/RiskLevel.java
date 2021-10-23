@@ -10,5 +10,5 @@ public enum RiskLevel {
     MEDIUM("medium"),
     LOW("low");
 
-    private final String name;
+    private final String riskLevelLabel;
 }

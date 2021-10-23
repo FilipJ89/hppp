@@ -1,6 +1,5 @@
 package com.pg.hppp.model;
 
-import com.pg.hppp.model.enums.Plant;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,10 +21,6 @@ public class Line extends BaseEntity{
 
     @NotNull
     private Material material;
-
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
-    private Plant plant;
 
     @NotNull
     @ManyToOne
