@@ -16,7 +16,7 @@ public class User extends Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

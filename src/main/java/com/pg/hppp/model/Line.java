@@ -20,16 +20,24 @@ public class Line extends BaseEntity{
     private Boolean isRisk = false;
 
     @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "material_id")
     private Material material;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "risk_id")
     private Risk risk;
 
-    @OneToMany(mappedBy = "line")
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "line_action",
+            joinColumns = {@JoinColumn(name = "line_id")},
+            inverseJoinColumns = {@JoinColumn(name = "action_id")})
     private Set<Action> actions = new HashSet<>();
 
     private User inputOriginator;

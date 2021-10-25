@@ -1,8 +1,6 @@
 package com.pg.hppp.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,7 +10,9 @@ import java.util.Set;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Action extends BaseEntity {
 
@@ -26,7 +26,20 @@ public class Action extends BaseEntity {
 
     private LocalDateTime actionCreationDateTime;
 
-    @ManyToOne
-    @JoinColumn(name = "line_id")
-    private Line line;
+    @ManyToMany(mappedBy = "actions")
+    private Set<Line> lines = new HashSet<>();
+
+    @Override
+    public int hashCode() {
+        return getId();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (getClass() == obj.getClass()) {
+            Action other = (Action) obj;
+            return getId() == other.getId();
+        }
+        return false;
+    }
 }
