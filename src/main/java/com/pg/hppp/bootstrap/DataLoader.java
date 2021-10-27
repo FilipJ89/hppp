@@ -20,13 +20,11 @@ import java.util.Set;
 public class DataLoader implements CommandLineRunner {
 
     private final Integer MATERIAL_NUMBER_DATALOAD = 100;
-    private final Integer SUPPLIER_NUMBER_DATALOAD = 5;
-    private final Integer RISK_NUMBER_DATALOAD = 5;
-    private final Integer ACTION_NUMBER_DATALOAD = 5;
+    private final Integer SUPPLIER_NUMBER_DATALOAD = 3;
+    private final Integer RISK_NUMBER_DATALOAD = 10;
+    private final Integer ACTION_NUMBER_DATALOAD = 10;
     private final Integer FAMILY_NUMBER_DATALOAD = 5;
     private final Integer SAP_NUMBER_BASE = 10000000;
-    private final String RISK_DESCRIPTION = "Risk description";
-    private final String ACTION_DESCRIPTION = "Action description";
     private final Random random = new Random();
 
     private final MaterialRepository materialRepository;
@@ -65,7 +63,7 @@ public class DataLoader implements CommandLineRunner {
 
         while (counter<RISK_NUMBER_DATALOAD) {
             riskRepository.save(Risk.builder()
-                    .riskDescription(RISK_DESCRIPTION+(counter+1))
+                    .riskDescription("Risk description"+(counter+1))
                     .riskLevel(RiskLevel.getRandomRiskLevel())
                     .riskStartDate(LocalDate.of(2021,10,1))
                     .riskEndDate(LocalDate.now().plusMonths(counter))
@@ -81,7 +79,7 @@ public class DataLoader implements CommandLineRunner {
 
         while (counter < ACTION_NUMBER_DATALOAD) {
             actionRepository.save(Action.builder()
-                    .actionDescription(ACTION_DESCRIPTION+(counter+1))
+                    .actionDescription("Action description"+(counter+1))
                     .actionCreationDateTime(LocalDateTime.now())
                     .actionDueDate(LocalDate.now().minusWeeks(ACTION_NUMBER_DATALOAD/2).plusWeeks(counter))
                     .actionOwners(null)
@@ -116,7 +114,7 @@ public class DataLoader implements CommandLineRunner {
                     SAP_NUMBER_BASE + counter).orElse(null));
             line.setRisk(riskRepository.findById(random.nextInt(2*RISK_NUMBER_DATALOAD)+1).orElse(null)); // around half will be true
             line.setIsRisk(line.getRisk()!= null);
-
+            line.setSupplier(supplierRepository.findById(random.nextInt(SUPPLIER_NUMBER_DATALOAD)+1).orElse(null));
             Set<Action> actionSet = new HashSet<>();
             if (line.getRisk() != null) {
                 Integer numberActions = random.nextInt(ACTION_NUMBER_DATALOAD);
@@ -128,9 +126,7 @@ public class DataLoader implements CommandLineRunner {
                     counter2++;
                 }
             }
-
             line.setActions(actionSet);
-            line.setSupplier(supplierRepository.findById(random.nextInt(SUPPLIER_NUMBER_DATALOAD)+1).orElse(null));
             line.setInputOriginator(null);
             line.setInputTime(LocalDateTime.now());
 
