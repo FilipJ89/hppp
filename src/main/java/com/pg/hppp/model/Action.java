@@ -19,7 +19,11 @@ public class Action extends BaseEntity {
 
     private String actionDescription;
 
-    @ManyToMany(mappedBy = "actions")
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "action_user",
+            joinColumns = {@JoinColumn(name = "action_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> actionOwners = new HashSet<>();
     private LocalDate actionDueDate;
     private Boolean isExecuted;

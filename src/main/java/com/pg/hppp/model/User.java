@@ -12,28 +12,27 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
-public class User extends Person implements UserDetails, CredentialsContainer {
+public class User extends BaseEntity implements UserDetails, CredentialsContainer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
+    private String firstName;
+    private String lastName;
+    private String email;
     private String username;
     private String password;
 
     @Builder.Default
     private boolean isPg = false;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_action",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "action_id")})
+    @ManyToMany(mappedBy = "actionOwners")
     private Set<Action> actions = new HashSet<>();
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Supplier> suppliers = new HashSet<>();
+
 
     @Builder.Default
     private Boolean accountNonExpired = true;
