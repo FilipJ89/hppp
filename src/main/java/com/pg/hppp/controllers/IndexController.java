@@ -8,20 +8,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
-    @GetMapping({"","/","index"})
+    @GetMapping({"", "/", "index"})
     public String readMainPage() {
         return "index";
     }
 
-    @GetMapping("/login")
-    public String readLoginPage(Model model) {
-        model.addAttribute("user", User.builder().build());
-        return "user/login";
-    }
+    @GetMapping({"/login"})
+    public String readLoginPage() { return "user/login"; }
 
-    @GetMapping("/register")
-    public String readRegisterPage(Model model) {
-        model.addAttribute("user", User.builder().build());
-        return "user/register";
-    }
+    @GetMapping({"/register"})
+    public String readRegisterPage() { return "user/register"; }
+
 }

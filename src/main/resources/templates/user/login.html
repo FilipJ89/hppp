@@ -17,7 +17,7 @@
 <div th:insert="fragments/navbar.html"/>
 <div class="container-md mt-5">
     <h3 class="mb-4"> Login page</h3>
-    <form th:object="${user}" th:action="@{/login}" method="post" id="login-form">
+    <form th:action="@{/login}" method="post" id="login-form">
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="text"
