@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface MaterialRepository extends CrudRepository<Material, Integer> {
 
-    Optional<Material> findByMaterialCode(Integer materialCode);
+    Optional<Material> findByMaterialCode(String materialCode);
 }

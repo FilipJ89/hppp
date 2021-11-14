@@ -27,7 +27,7 @@ public class DataLoader implements CommandLineRunner {
     private final Integer RISK_NUMBER_DATALOAD = 5;
     private final Integer ACTION_NUMBER_DATALOAD = 5;
     private final Integer FAMILY_NUMBER_DATALOAD = 5;
-    private final Integer SAP_NUMBER_BASE = 10000000;
+    private final String SAP_NUMBER_BASE = "10000000";
     private final String RISK_DESCRIPTION = "Risk description";
     private final String ACTION_DESCRIPTION = "Action description";
     private final Random random = new Random();

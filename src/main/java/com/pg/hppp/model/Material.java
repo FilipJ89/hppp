@@ -19,8 +19,7 @@ import java.util.Set;
 public class Material extends BaseEntity{
 
     @NotNull
-    @Digits(integer = 8, fraction = 0)
-    private Integer materialCode;
+    private String materialCode;
 
     @NotNull
     private String materialName;
