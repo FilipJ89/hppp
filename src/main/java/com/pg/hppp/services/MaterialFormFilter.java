@@ -16,6 +16,9 @@ public class MaterialFormFilter {
     private String materialCode = "";
 
     @Builder.Default
+    private String materialFamily = "";
+
+    @Builder.Default
     private Boolean isRisk = false;
 
     @Builder.Default

@@ -40,14 +40,29 @@ public class LineController {
     public String filterMaterials(MaterialFormFilter lineFilterForm, Model model, @AuthenticationPrincipal User authUser) {
         model.addAttribute("filter", lineFilterForm);
 
-        Set<Line> lines = lineService.getAllLinesFilteredForAuthUser(getTestUser(1),lineFilterForm);
+        Set<Line> lines = lineService.getAllLinesForAuthUserFilterMaterials(getTestUser(1),lineFilterForm);
         model.addAttribute("lines", lines);
 
         return "line/materials";
     }
 
     @GetMapping("/risks")
-    public String showRisks() {
+    public String showRisks(MaterialFormFilter lineFilterForm, Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("filter", lineFilterForm);
+
+        Set<Line> lines = lineService.getAllLinesWithRisksFilteredForAuthUser(getTestUser(1));
+        model.addAttribute("lines", lines);
+
+        return "line/risks";
+    }
+
+    @PostMapping("/risks")
+    public String filterRisks(MaterialFormFilter lineFilterForm, Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("filter", lineFilterForm);
+
+        Set<Line> lines = lineService.getAllLinesForAuthUserFilterRisks(getTestUser(1),lineFilterForm);
+        model.addAttribute("lines", lines);
+
         return "line/risks";
     }
 }

@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests(authorize -> authorize
                         .antMatchers("/h2-console/**").permitAll() // for H2 console free access
                         .antMatchers("/", "/register", "/webjars/**", "/login", "/resources/**").permitAll()
-                        .antMatchers("/materials").permitAll())
+                        .antMatchers("/materials", "/risks").permitAll())
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()

@@ -8,4 +8,6 @@ import java.util.Set;
 
 public interface LineRepository extends CrudRepository<Line, Integer> {
     Set<Line> findAllBySupplierIn(Set<Supplier> suppliers);
+    //Set<Line> findAllBySupplierInAndIsRisk(Set<Supplier> suppliers,Boolean isRisk);
+
 }

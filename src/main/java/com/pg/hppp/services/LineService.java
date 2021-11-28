@@ -33,7 +33,7 @@ public class LineService {
         return lineRepository.findAllBySupplierIn(suppliers);
     }
 
-    public Set<Line> getAllLinesFilteredForAuthUser(User authUser, MaterialFormFilter formData) {
+    public Set<Line> getAllLinesForAuthUserFilterMaterials(User authUser, MaterialFormFilter formData) {
         Set<Line> authorizedLines = getAllLinesForAuthUser(authUser);
         Set<Line> filteredLines = authorizedLines
                 .stream()
@@ -61,5 +61,42 @@ public class LineService {
 
         return  filteredLines;
     }
+
+    public Set<Line> getAllLinesWithRisksFilteredForAuthUser(User authUser) {
+        Set<Line> authorizedLines = getAllLinesForAuthUser(authUser);
+        Set<Line> filteredLines = authorizedLines
+                .stream()
+                .filter(line -> line.getIsRisk())
+                .collect(Collectors.toSet());
+
+        return filteredLines;
+    }
+
+    public Set<Line> getAllLinesForAuthUserFilterRisks(User authUser, MaterialFormFilter formData) {
+        Set<Line> authorizedLines = getAllLinesWithRisksFilteredForAuthUser(authUser);
+        Set<Line> filteredLines = authorizedLines
+                .stream()
+                .filter(line -> {
+                    Boolean condition1 = line.getMaterial().getMaterialName().contains(formData.getMaterialName());
+                    Boolean condition2 = line.getMaterial().getMaterialCode().contains(formData.getMaterialCode());
+                    Boolean condition3 = line.getMaterial().getMaterialFamily().contains(formData.getMaterialFamily());
+
+                    Boolean condition4 = true;
+                    if (!formData.getRiskLevel().equals("Risk level")) { //todo export and link this with default choice = show all
+                        if (line.getRisk() == null) {
+                            condition4 = false;
+                        } else {
+                            condition4 = line.getRisk().getRiskLevel().getRiskLevelLabel().equals(formData.getRiskLevel());
+                        }
+                    }
+
+                    return condition1 && condition2 && condition3 && condition4;
+                })
+                .collect(Collectors.toSet());
+
+        return  filteredLines;
+    }
+
+
 
 }

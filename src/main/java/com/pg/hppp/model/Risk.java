@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,4 +25,8 @@ public class Risk extends BaseEntity{
 
     @OneToMany(mappedBy = "risk")
     private Set<Line> lines = new HashSet<>();
+
+    public Long getRiskLength() {
+        return ChronoUnit.DAYS.between(riskStartDate,riskEndDate);
+    }
 }
