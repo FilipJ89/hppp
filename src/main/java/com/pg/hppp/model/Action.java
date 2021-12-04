@@ -29,6 +29,7 @@ public class Action extends BaseEntity {
     private Boolean isExecuted;
 
     private LocalDateTime actionCreationDateTime;
+    private LocalDateTime actionLastUpdate;
 
     @ManyToMany(mappedBy = "actions")
     private Set<Line> lines = new HashSet<>();

@@ -122,6 +122,7 @@ public class DataLoader implements CommandLineRunner {
             actionRepository.save(Action.builder()
                     .actionDescription(ACTION_DESCRIPTION+(counter+1))
                     .actionCreationDateTime(LocalDateTime.now())
+                    .actionLastUpdate(LocalDateTime.now())
                     .actionDueDate(LocalDate.now().minusWeeks(ACTION_NUMBER_DATALOAD/2).plusWeeks(counter))
                     .actionOwners(assignUsers(USER_NUMBER_DATALOAD))
                     .isExecuted(random.nextBoolean())

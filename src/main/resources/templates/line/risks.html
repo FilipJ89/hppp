@@ -14,8 +14,6 @@
 </head>
 <body>
 
-<!--                        th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}" -->
-
 <div th:insert="fragments/navbar.html"/>
 
 <div th:insert="fragments/filterFormRisks.html"/>
@@ -36,18 +34,20 @@
             <th scope="col">Risk Start Date</th>
             <th scope="col">Risk End Date</th>
             <th scope="col">Risk Length [Days]</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="line : ${lines}">
-            <td th:text="${line.getMaterial().getMaterialCode()}" /></td>
-            <td th:text="${line.getMaterial().getMaterialName()}" /></td>
-            <td th:text="${#strings.setJoin(line.getMaterial().getPlants(), ', ')}" /></td>
-            <td th:text="${line.getRisk().getRiskLevel()}" /></td>
-            <td th:text="${line.getRisk().getRiskDescription()}" /></td>
-            <td th:text="${#temporals.format(line.getRisk().getRiskStartDate(), 'MM-yyyy')}" /></td>
-            <td th:text="${#temporals.format(line.getRisk().getRiskEndDate(), 'MM-yyyy')}" /></td>
-            <td th:text="${line.getRisk().getRiskLength()}" /></td>
+            <td th:text="${line.getMaterial().getMaterialCode()}" />
+            <td th:text="${line.getMaterial().getMaterialName()}" />
+            <td th:text="${#strings.setJoin(line.getMaterial().getPlants(), ', ')}" />
+            <td th:text="${line.getRisk().getRiskLevel()}" />
+            <td th:text="${line.getRisk().getRiskDescription()}" />
+            <td th:text="${#temporals.format(line.getRisk().getRiskStartDate(), 'MM-yyyy')}" />
+            <td th:text="${#temporals.format(line.getRisk().getRiskEndDate(), 'MM-yyyy')}" />
+            <td th:text="${line.getRisk().getRiskLength()}" />
+            <td><a th:href="@{'/risks/actions/' + ${line.getId()}}">View Actions</a></td>
         </tr>
         </tbody>
     </table>
