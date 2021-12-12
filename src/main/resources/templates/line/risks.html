@@ -16,7 +16,7 @@
 
 <div th:insert="fragments/navbar.html"/>
 
-<div th:insert="fragments/filterFormRisks.html"/>
+<div th:insert="fragments/filterForm.html"/>
 
 <div class="container-md mt-3">
     <h3 class="mb-4"> Material List</h3>
@@ -28,7 +28,8 @@
         <tr>
             <th scope="col">Material #</th>
             <th scope="col">Material Name</th>
-            <th scope="col">Plants</th>
+            <th scope="col">Plant</th>
+            <th scope="col">Material Family</th>
             <th scope="col">Risk Level</th>
             <th scope="col">Risk Description</th>
             <th scope="col">Risk Start Date</th>
@@ -41,11 +42,12 @@
         <tr th:each="line : ${lines}">
             <td th:text="${line.getMaterial().getMaterialCode()}" />
             <td th:text="${line.getMaterial().getMaterialName()}" />
-            <td th:text="${#strings.setJoin(line.getMaterial().getPlants(), ', ')}" />
+            <td th:text="${line.getMaterial().getPlant()}" />
+            <td th:text="${line.getMaterial().getMaterialFamily()}" />
             <td th:text="${line.getRisk().getRiskLevel()}" />
             <td th:text="${line.getRisk().getRiskDescription()}" />
-            <td th:text="${#temporals.format(line.getRisk().getRiskStartDate(), 'MM-yyyy')}" />
-            <td th:text="${#temporals.format(line.getRisk().getRiskEndDate(), 'MM-yyyy')}" />
+            <td th:text="${#temporals.format(line.getRisk().getRiskStartDate(), 'MMM yy')}" />
+            <td th:text="${#temporals.format(line.getRisk().getRiskEndDate(), 'MMM yy')}" />
             <td th:text="${line.getRisk().getRiskLength()}" />
             <td><a th:href="@{'/risks/actions/' + ${line.getId()}}">View Actions</a></td>
         </tr>

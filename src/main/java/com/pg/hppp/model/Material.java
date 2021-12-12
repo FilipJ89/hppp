@@ -27,15 +27,12 @@ public class Material extends BaseEntity{
     private String materialFamily;
 
     @NotNull
-    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    private Set<Plant> plants = new HashSet<>();
+    private Plant plant;
 
     @NotNull
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
 
-//    @OneToMany(mappedBy = "material")
-//    private Set<Line> lines = new HashSet<>();
 }

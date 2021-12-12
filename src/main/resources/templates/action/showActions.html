@@ -17,8 +17,13 @@
 <div th:insert="fragments/navbar.html"/>
 
 <div class="container-md mt-3">
-    <h3 class="mb-4"> Actions for material </h3>
-    <h4 th:text="${line.material.getMaterialCode()} + ' - ' + ${line.material.getMaterialName()}"/>
+    <h3 class="mb-4"> Actions </h3>
+    <h5 class="mb-4">
+        <span th:text="'Material: ' + ${line.material.getMaterialCode()} + ' - ' + ${line.material.getMaterialName()}"/> <br>
+        <span th:text="'Risk: ' + ${line.risk.getRiskDescription()}"/> <br>
+        <span th:text="'Period: start ' + ${#temporals.format(line.getRisk().getRiskStartDate(), 'MMM yy')} +
+            ', length ' + ${line.getRisk().getRiskLength()} + ' days'"/>
+    </h5>
 </div>
 
 <div class="container-lg">
@@ -38,9 +43,9 @@
             <td>
                 <span th:each="actionOwner, iterStat : ${action.actionOwners}" th:text="!${iterStat.last} ? ${actionOwner.getUsername()} + ', ' : ${actionOwner.getUsername()}" />
             </td>
-            <td th:text="${#temporals.format(action.getActionDueDate(), 'dd.MM.yy')}" />
+            <td th:text="${#temporals.format(action.getActionDueDate(), 'dd MMM yy')}" />
             <td th:text="${action.isExecuted} ? 'Yes' : 'No'" />
-            <td th:text="${#temporals.format(action.getActionLastUpdate(), 'HH:mm dd.MM.yy')}" />
+            <td th:text="${#temporals.format(action.getActionLastUpdate(), 'HH:mm, dd MMM yy')}" />
 
 <!--            <td><a th:href="@{'/risks/actions/' + ${line.getMaterial().getMaterialCode()}}">View Actions</a></td>-->
         </tr>

@@ -40,7 +40,4 @@ public class Line extends BaseEntity{
             inverseJoinColumns = {@JoinColumn(name = "action_id")})
     private Set<Action> actions = new HashSet<>();
 
-    private User inputOriginator;
-    private LocalDateTime inputTime;
-
 }

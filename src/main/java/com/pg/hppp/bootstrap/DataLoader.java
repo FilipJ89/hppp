@@ -93,7 +93,7 @@ public class DataLoader implements CommandLineRunner {
             .materialName("Material"+(counter+1))
             .materialFamily("Family"+random.nextInt(FAMILY_NUMBER_DATALOAD)+1)
             .categories(Category.createRandomEnumSet())
-            .plants(Plant.createRandomPlantSet())
+            .plant(Plant.randomPlant())
             .build());
 
             counter++;
@@ -171,8 +171,6 @@ public class DataLoader implements CommandLineRunner {
 
             line.setActions(actionSet);
             line.setSupplier(supplierRepository.findById(random.nextInt(SUPPLIER_NUMBER_DATALOAD)+1).orElse(null));
-            line.setInputOriginator(null);
-            line.setInputTime(LocalDateTime.now());
 
             lineRepository.save(line);
             counter++;

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import java.util.Set;
@@ -23,43 +24,26 @@ public class LineController {
     private final LineService lineService;
     private final TestUser testUser;
 
-    @GetMapping("/materials")
+    @RequestMapping("/materials")
     public String showMaterials(MaterialFormFilter lineFilterDefault, Model model, @AuthenticationPrincipal User authUser) {
-        model.addAttribute("filter", lineFilterDefault.builder().build());
+        model.addAttribute("filter", lineFilterDefault);
 
-        Set<Line> lines = lineService.getAllLinesForAuthUser(testUser.getTestUser(1));
-        model.addAttribute("lines", lines);
-
-        return "line/materials";
-    }
-
-    @PostMapping("/materials")
-    public String filterMaterials(MaterialFormFilter lineFilterForm, Model model, @AuthenticationPrincipal User authUser) {
-        model.addAttribute("filter", lineFilterForm);
-
-        Set<Line> lines = lineService.getAllLinesForAuthUserFilterMaterials(testUser.getTestUser(1),lineFilterForm);
-        model.addAttribute("lines", lines);
+        Set<Line> authLines = lineService.getAllLinesForAuthUser(testUser.getTestUser(1));
+        Set<Line> authLinesFiltered = lineService.getAllLinesFiltered(authLines, lineFilterDefault);
+        model.addAttribute("lines", authLinesFiltered);
 
         return "line/materials";
     }
 
-    @GetMapping("/risks")
-    public String showRisks(MaterialFormFilter lineFilterForm, Model model, @AuthenticationPrincipal User user) {
+    @RequestMapping("/risks")
+    public String showRisks(MaterialFormFilter lineFilterForm, Model model, @AuthenticationPrincipal User authUser) {
         model.addAttribute("filter", lineFilterForm);
 
-        Set<Line> lines = lineService.getAllLinesWithRisksFilteredForAuthUser(testUser.getTestUser(1));
-        model.addAttribute("lines", lines);
+        Set<Line> authLinesRisk = lineService.getAllLinesWithRisksFilteredForAuthUser(testUser.getTestUser(1));
+        Set<Line> authLinesRiskFiltered = lineService.getAllLinesFiltered(authLinesRisk,lineFilterForm);
+        model.addAttribute("lines", authLinesRiskFiltered);
 
         return "line/risks";
     }
 
-    @PostMapping("/risks")
-    public String filterRisks(MaterialFormFilter lineFilterForm, Model model, @AuthenticationPrincipal User user) {
-        model.addAttribute("filter", lineFilterForm);
-
-        Set<Line> lines = lineService.getAllLinesForAuthUserFilterRisks(testUser.getTestUser(1),lineFilterForm);
-        model.addAttribute("lines", lines);
-
-        return "line/risks";
-    }
 }

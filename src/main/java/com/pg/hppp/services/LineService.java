@@ -33,33 +33,38 @@ public class LineService {
         return lineRepository.findAllBySupplierIn(suppliers);
     }
 
-    public Set<Line> getAllLinesForAuthUserFilterMaterials(User authUser, MaterialFormFilter formData) {
-        Set<Line> authorizedLines = getAllLinesForAuthUser(authUser);
-        Set<Line> filteredLines = authorizedLines
+    public Set<Line> getAllLinesFiltered(Set<Line> startLines, MaterialFormFilter formData) {
+        Set<Line> endLines = startLines
                 .stream()
                 .filter(line -> {
                     Boolean condition1 = line.getMaterial().getMaterialName().contains(formData.getMaterialName());
                     Boolean condition2 = line.getMaterial().getMaterialCode().contains(formData.getMaterialCode());
-
-                    Boolean condition3 = true;
-                    if (formData.getIsRisk()) {
-                        condition3 = line.getIsRisk();
-                    }
+                    Boolean condition3 = line.getMaterial().getMaterialFamily().contains(formData.getMaterialFamily());
 
                     Boolean condition4 = true;
-                    if (!formData.getRiskLevel().equals("Risk level")) { //todo export and link this with default choice = show all
+                    if (formData.getIsRisk()) {
+                        condition4 = line.getIsRisk();
+                    }
+
+                    Boolean condition5 = true;
+                    if (!formData.getPlant().equals("plant") && !formData.getPlant().equals("")) { //todo export and link this with default choice = show all
+                        condition5 = line.getMaterial().getPlant().getPlantLabel().equals(formData.getPlant());
+                    }
+
+                    Boolean condition6 = true;
+                    if (!formData.getRiskLevel().equals("risk level") && !formData.getRiskLevel().equals("")) { //todo export and link this with default choice = show all
                         if (line.getRisk() == null) {
-                            condition4 = false;
+                            condition6 = false;
                         } else {
-                            condition4 = line.getRisk().getRiskLevel().getRiskLevelLabel().equals(formData.getRiskLevel());
+                            condition6 = line.getRisk().getRiskLevel().getRiskLevelLabel().equals(formData.getRiskLevel());
                         }
                     }
 
-                    return condition1 && condition2 && condition3 && condition4;
+                    return condition1 && condition2 && condition3 && condition4 && condition5 && condition6;
                 })
                 .collect(Collectors.toSet());
 
-        return  filteredLines;
+        return endLines;
     }
 
     public Set<Line> getAllLinesWithRisksFilteredForAuthUser(User authUser) {
@@ -71,32 +76,6 @@ public class LineService {
 
         return filteredLines;
     }
-
-    public Set<Line> getAllLinesForAuthUserFilterRisks(User authUser, MaterialFormFilter formData) {
-        Set<Line> authorizedLines = getAllLinesWithRisksFilteredForAuthUser(authUser);
-        Set<Line> filteredLines = authorizedLines
-                .stream()
-                .filter(line -> {
-                    Boolean condition1 = line.getMaterial().getMaterialName().contains(formData.getMaterialName());
-                    Boolean condition2 = line.getMaterial().getMaterialCode().contains(formData.getMaterialCode());
-                    Boolean condition3 = line.getMaterial().getMaterialFamily().contains(formData.getMaterialFamily());
-
-                    Boolean condition4 = true;
-                    if (!formData.getRiskLevel().equals("Risk level")) { //todo export and link this with default choice = show all
-                        if (line.getRisk() == null) {
-                            condition4 = false;
-                        } else {
-                            condition4 = line.getRisk().getRiskLevel().getRiskLevelLabel().equals(formData.getRiskLevel());
-                        }
-                    }
-
-                    return condition1 && condition2 && condition3 && condition4;
-                })
-                .collect(Collectors.toSet());
-
-        return  filteredLines;
-    }
-
 
 
 }
