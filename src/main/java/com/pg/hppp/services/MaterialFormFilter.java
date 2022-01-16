@@ -2,6 +2,8 @@ package com.pg.hppp.services;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,6 +22,15 @@ public class MaterialFormFilter {
 
     @Builder.Default
     private Boolean isRisk = false;
+
+    @Builder.Default
+    private String riskDescription = "";
+
+    @Builder.Default
+    private LocalDate riskStartDate = LocalDate.now();
+
+    @Builder.Default
+    private LocalDate riskEndDate = LocalDate.now();
 
     @Builder.Default
     private String plant = "";
