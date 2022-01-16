@@ -27,12 +27,12 @@ public class LineController {
     private final TestUser testUser;
 
     @RequestMapping("/materials")
-    public String showMaterials(MaterialFormFilter lineFilterDefault, Model model, @AuthenticationPrincipal User authUser) {
-        model.addAttribute("filter", lineFilterDefault);
+    public String showMaterials(MaterialFormFilter lineFilter, Model model, @AuthenticationPrincipal User authUser) {
+        model.addAttribute("filter", lineFilter);
         Set<Line> authLines = lineService.getAllLinesForAuthUser(testUser.getTestUser(1));
-        Set<Line> authLinesFiltered = lineService.getAllLinesFiltered(authLines, lineFilterDefault);
+        Set<Line> authLinesFiltered = lineService.getAllLinesFiltered(authLines, lineFilter);
 
-        Set<String> materialFamilies = authLinesFiltered.stream().map(family -> family.getMaterial().getMaterialFamily()).collect(Collectors.toSet());
+        Set<String> materialFamilies = authLines.stream().map(family -> family.getMaterial().getMaterialFamily()).collect(Collectors.toSet());
         TreeSet<String> materialFamiliesDescending = new TreeSet<>(materialFamilies);
 
         model.addAttribute("lines", authLinesFiltered);
@@ -47,6 +47,11 @@ public class LineController {
 
         Set<Line> authLinesRisk = lineService.getAllLinesWithRisksFilteredForAuthUser(testUser.getTestUser(1));
         Set<Line> authLinesRiskFiltered = lineService.getAllLinesFiltered(authLinesRisk,lineFilterForm);
+
+        Set<String> materialFamilies = authLinesRisk.stream().map(family -> family.getMaterial().getMaterialFamily()).collect(Collectors.toSet());
+        TreeSet<String> materialFamiliesDescending = new TreeSet<>(materialFamilies);
+
+        model.addAttribute("families", materialFamiliesDescending);
         model.addAttribute("lines", authLinesRiskFiltered);
 
         return "line/risks";
