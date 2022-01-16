@@ -1,6 +1,5 @@
 package com.pg.hppp.services;
 
-import com.pg.hppp.model.enums.Plant;
 import lombok.*;
 
 @Getter
@@ -20,10 +19,10 @@ public class MaterialFormFilter {
     private String materialFamily = "";
 
     @Builder.Default
-    private String plant = "";
+    private Boolean isRisk = false;
 
     @Builder.Default
-    private Boolean isRisk = false;
+    private String plant = "";
 
     @Builder.Default
     private String riskLevel = "";

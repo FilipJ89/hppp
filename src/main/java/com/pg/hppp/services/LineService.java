@@ -6,13 +6,13 @@ import com.pg.hppp.model.User;
 import com.pg.hppp.repositories.LineRepository;
 import com.pg.hppp.repositories.SupplierRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 
 @AllArgsConstructor
 @Service
@@ -37,30 +37,34 @@ public class LineService {
         Set<Line> endLines = startLines
                 .stream()
                 .filter(line -> {
-                    Boolean condition1 = line.getMaterial().getMaterialName().contains(formData.getMaterialName());
-                    Boolean condition2 = line.getMaterial().getMaterialCode().contains(formData.getMaterialCode());
-                    Boolean condition3 = line.getMaterial().getMaterialFamily().contains(formData.getMaterialFamily());
+                    Boolean materialNameCondition = line.getMaterial().getMaterialName().contains(formData.getMaterialName());
+                    Boolean materialCodeCondition = line.getMaterial().getMaterialCode().contains(formData.getMaterialCode());
 
-                    Boolean condition4 = true;
+                    Boolean materialFamilyCondition = true;
+                    if (!formData.getMaterialFamily().equals("")) {
+                        materialFamilyCondition = formData.getMaterialFamily().contains(line.getMaterial().getMaterialFamily());
+                    }
+
+                    Boolean isRiskCondition = true;
                     if (formData.getIsRisk()) {
-                        condition4 = line.getIsRisk();
+                        isRiskCondition = line.getIsRisk();
                     }
 
-                    Boolean condition5 = true;
-                    if (!formData.getPlant().equals("plant") && !formData.getPlant().equals("")) { //todo export and link this with default choice = show all
-                        condition5 = line.getMaterial().getPlant().getPlantLabel().equals(formData.getPlant());
+                    Boolean plantCondition = true;
+                    if (!formData.getPlant().equals("")) {
+                        plantCondition = formData.getPlant().contains(line.getMaterial().getPlant().getPlantLabel());
                     }
 
-                    Boolean condition6 = true;
-                    if (!formData.getRiskLevel().equals("risk level") && !formData.getRiskLevel().equals("")) { //todo export and link this with default choice = show all
+                    Boolean riskLevelCondition = true;
+                    if (!formData.getRiskLevel().equals("")) {
                         if (line.getRisk() == null) {
-                            condition6 = false;
+                            riskLevelCondition = false;
                         } else {
-                            condition6 = line.getRisk().getRiskLevel().getRiskLevelLabel().equals(formData.getRiskLevel());
+                            riskLevelCondition = formData.getRiskLevel().contains(line.getRisk().getRiskLevel().getRiskLevelLabel());
                         }
                     }
 
-                    return condition1 && condition2 && condition3 && condition4 && condition5 && condition6;
+                    return materialNameCondition && materialCodeCondition && materialFamilyCondition && isRiskCondition && plantCondition && riskLevelCondition;
                 })
                 .collect(Collectors.toSet());
 

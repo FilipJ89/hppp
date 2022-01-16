@@ -8,14 +8,16 @@ import java.util.Random;
 @Getter
 @AllArgsConstructor
 public enum Plant {
-    EUSKIRCHEN("EUS",4830, Region.EU, 0),
-    TARGOWEK("TAR",9445, Region.EU, 1),
-    BELLVILLE("BEL",1111,Region.NA, 2);
 
-    private final String plantLabel;
+    BELLVILLE("BEL",1111,Region.NA, 0,"Bellville - 1111"),
+    EUSKIRCHEN("EUS",4830, Region.EU, 1,"Euskirchen - 4830"),
+    TARGOWEK("TAR",9445, Region.EU, 2,"Targowek - 9445");
+
+    private final String plantShort;
     private final Integer plantNumber;
     private final Region region;
     private final Integer plantOrder;
+    private final String plantLabel;
 
     public static Plant getPlantByOrderNumber(Integer number) {
         for (Plant p : Plant.values()) {

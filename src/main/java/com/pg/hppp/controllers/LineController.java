@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Controller
@@ -27,10 +29,14 @@ public class LineController {
     @RequestMapping("/materials")
     public String showMaterials(MaterialFormFilter lineFilterDefault, Model model, @AuthenticationPrincipal User authUser) {
         model.addAttribute("filter", lineFilterDefault);
-
         Set<Line> authLines = lineService.getAllLinesForAuthUser(testUser.getTestUser(1));
         Set<Line> authLinesFiltered = lineService.getAllLinesFiltered(authLines, lineFilterDefault);
+
+        Set<String> materialFamilies = authLinesFiltered.stream().map(family -> family.getMaterial().getMaterialFamily()).collect(Collectors.toSet());
+        TreeSet<String> materialFamiliesDescending = new TreeSet<>(materialFamilies);
+
         model.addAttribute("lines", authLinesFiltered);
+        model.addAttribute("families", materialFamiliesDescending);
 
         return "line/materials";
     }
