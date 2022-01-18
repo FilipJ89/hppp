@@ -8,9 +8,7 @@ import com.pg.hppp.repositories.RiskRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -20,21 +18,27 @@ public class RiskService {
     private final LineRepository lineRepository;
 
     public void updateRisks(Set<Line> lines, MaterialFormFilter formData) {
-        List<Risk> risks = lines.stream().map(Line::getRisk).collect(Collectors.toList());
-        if (formData.getIsRisk() == true) {
-            risks.forEach(risk -> {
-                risk.setRiskLevel(RiskLevel.getEnumByLabel(formData.getRiskLevel()));
-                risk.setRiskDescription(formData.getRiskDescription());
-                risk.setRiskStartDate(formData.getRiskStartDate());
-                risk.setRiskEndDate(formData.getRiskEndDate());
+        if (formData.getIsRisk()) {
+            Risk risk = new Risk();
+            risk.setRiskLevel(RiskLevel.getEnumByLabel(formData.getRiskLevel()));
+            risk.setRiskDescription(formData.getRiskDescription());
+            risk.setRiskStartDate(formData.getRiskStartDate());
+            risk.setRiskEndDate(formData.getRiskEndDate());
+            risk.setLines(lines);
+            riskRepository.save(risk);
+
+            lines.forEach(line -> {
+                line.setIsRisk(true);
+                line.setRisk(risk);
             });
-            riskRepository.saveAll(risks);
+
         } else {
             lines.forEach(line -> {
                 line.setIsRisk(false);
                 line.setRisk(null);
             });
-            lineRepository.saveAll(lines); // todo delete risks that are not linked with any line
         }
+        lineRepository.saveAll(lines);
+        // todo delete risks that are not linked with any line
     }
 }

@@ -17,17 +17,17 @@
 <div th:insert="fragments/navbar.html"/>
 
 <div class="container-md mt-4">
-    <h3 class="mb-4">Please filter materials for risk edition:</h3>
+    <h3 class="mb-4">Please filter materials for risk addition:</h3>
 </div>
 
 <div th:insert="fragments/filterForm.html"/>
 
 <div class="container-md mt-4">
-    <h3 class="mb-4">Edit risks: <a th:href="@{'/risks/update/edit'}"> <button class="btn btn-primary">edit</button></a></h3>
+    <h3 class="mb-4">Add risks: <a th:href="@{'/risks/new/add'}"> <button class="btn btn-primary">add</button></a></h3>
 </div>
 
 <div class="container-md mt-4">
-    <h3 class="mb-4">You will mass edit risks for below list:</h3>
+    <h3 class="mb-4">You will mass add risks for below list:</h3>
 </div>
 
 <div class="container-lg">
@@ -38,12 +38,6 @@
             <th scope="col">Material Name</th>
             <th scope="col">Plant</th>
             <th scope="col">Material Family</th>
-            <th scope="col">Risk Level</th>
-            <th scope="col">Risk Description</th>
-            <th scope="col">Risk Start Date</th>
-            <th scope="col">Risk End Date</th>
-            <th scope="col">Risk Length [Days]</th>
-
         </tr>
         </thead>
         <tbody>
@@ -52,11 +46,6 @@
             <td th:text="${line.getMaterial().getMaterialName()}" />
             <td th:text="${line.getMaterial().getPlant()}" />
             <td th:text="${line.getMaterial().getMaterialFamily()}" />
-            <td th:text="${line.getRisk().getRiskLevel()}" />
-            <td th:text="${line.getRisk().getRiskDescription()}" />
-            <td th:text="${#temporals.format(line.getRisk().getRiskStartDate(), 'MMM yy')}" />
-            <td th:text="${#temporals.format(line.getRisk().getRiskEndDate(), 'MMM yy')}" />
-            <td th:text="${line.getRisk().getRiskLength()}" />
         </tr>
         </tbody>
     </table>

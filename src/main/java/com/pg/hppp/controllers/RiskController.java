@@ -26,38 +26,82 @@ public class RiskController {
     private final LineService lineService;
     private final RiskService riskService;
     private final TestUser testUser;
-    private Set<Line> lastFilteredRiskLines;
+    private Set<Line> lastFilteredLines;
 
-    @RequestMapping("/risks")
-    public String showRisks(MaterialFormFilter filter, Model model, @AuthenticationPrincipal User authUser) {
-        model.addAttribute("filter", filter);
+    @GetMapping("/risks")
+    public String showRisks(Model model, @AuthenticationPrincipal User authUser) {
 
-        Set<Line> authLinesRisk = lineService.getAllLinesWithRisksFilteredForAuthUser(testUser.getTestUser(1));
-        Set<Line> authLinesRiskFiltered = lineService.getAllLinesFiltered(authLinesRisk,filter);
-        lastFilteredRiskLines = new HashSet<>(authLinesRiskFiltered); // todo how to pass it more elegantly to below controller?
-
-        Set<String> materialFamilies = authLinesRisk.stream().map(family -> family.getMaterial().getMaterialFamily()).collect(Collectors.toSet());
-        TreeSet<String> materialFamiliesDescending = new TreeSet<>(materialFamilies);
-
-        model.addAttribute("families", materialFamiliesDescending);
-        model.addAttribute("lines", authLinesRiskFiltered);
+        Set<Line> authLinesRisk = lineService.getAllLinesForAuthUserIsRisk(true, testUser.getTestUser(1));
+        model.addAttribute("lines", authLinesRisk);
 
         return "risk/showRisks";
     }
 
-    @GetMapping("/risks/edit")
-    public String editRisks(MaterialFormFilter filter, Model model) {
+    @RequestMapping("/risks/update")
+    public String updateRisks(MaterialFormFilter filter, Model model) {
+        Set<Line> authLinesRisk = lineService.getAllLinesForAuthUserIsRisk(true, testUser.getTestUser(1));
+        Set<Line> authLinesRiskFiltered = lineService.getAllLinesFiltered(authLinesRisk,filter);
 
+        Set<String> materialFamilies = authLinesRisk.stream().map(family -> family.getMaterial().getMaterialFamily()).collect(Collectors.toSet());
+        TreeSet<String> materialFamiliesDescending = new TreeSet<>(materialFamilies);
+        model.addAttribute("families", materialFamiliesDescending);
         model.addAttribute("filter", filter);
-        model.addAttribute("lines", lastFilteredRiskLines);
+        model.addAttribute("lines", authLinesRiskFiltered);
+
+        lastFilteredLines = new HashSet<>(authLinesRiskFiltered); // todo find more elegant way to pass data between controllers
 
         return "risk/updateRisks";
     }
 
-    @PostMapping("/risks/edit")
-    public String submitRisks(MaterialFormFilter filter, Model model) {
+    @GetMapping("/risks/update/edit")
+    public String editRisksForm(MaterialFormFilter filter, Model model) {
+
         model.addAttribute("filter", filter);
-        riskService.updateRisks(lastFilteredRiskLines,filter);
-        return "risk/showRisks";
+        model.addAttribute("lines", lastFilteredLines);
+
+        return "risk/editRisks";
+    }
+
+    @PostMapping("/risks/update/edit")
+    public String editRisksProcess(MaterialFormFilter filter, Model model) {
+
+        model.addAttribute("filter", filter);
+        riskService.updateRisks(lastFilteredLines,filter);
+
+        return "redirect:/risks";
+    }
+
+    @RequestMapping("/risks/new")
+    public String newRisks(MaterialFormFilter filter, Model model) {
+        Set<Line> authLinesRisk = lineService.getAllLinesForAuthUserIsRisk(false, testUser.getTestUser(1));
+        Set<Line> authLinesRiskFiltered = lineService.getAllLinesFiltered(authLinesRisk,filter);
+
+        Set<String> materialFamilies = authLinesRisk.stream().map(family -> family.getMaterial().getMaterialFamily()).collect(Collectors.toSet());
+        TreeSet<String> materialFamiliesDescending = new TreeSet<>(materialFamilies);
+        model.addAttribute("families", materialFamiliesDescending);
+        model.addAttribute("filter", filter);
+        model.addAttribute("lines", authLinesRiskFiltered);
+
+        lastFilteredLines = new HashSet<>(authLinesRiskFiltered);
+
+        return "risk/newRisks";
+    }
+
+    @GetMapping("/risks/new/add")
+    public String newRisksForm(MaterialFormFilter filter, Model model) {
+
+        model.addAttribute("filter", filter);
+        model.addAttribute("lines", lastFilteredLines);
+
+        return "risk/addRisks";
+    }
+
+    @PostMapping("/risks/new/add")
+    public String newRisksProcess(MaterialFormFilter filter, Model model) {
+
+        model.addAttribute("filter", filter);
+        riskService.updateRisks(lastFilteredLines,filter);
+
+        return "redirect:/risks";
     }
 }

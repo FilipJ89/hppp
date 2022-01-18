@@ -33,13 +33,20 @@ public class LineService {
         return lineRepository.findAllBySupplierIn(suppliers);
     }
 
-    public Set<Line> getAllLinesWithRisksFilteredForAuthUser(User authUser) {
+    public Set<Line> getAllLinesForAuthUserIsRisk(Boolean isRisk, User authUser) {
         Set<Line> authorizedLines = getAllLinesForAuthUser(authUser);
-        Set<Line> filteredLines = authorizedLines
-                .stream()
-                .filter(line -> line.getIsRisk())
-                .collect(Collectors.toSet());
-
+        Set<Line> filteredLines;
+        if (isRisk) {
+            filteredLines = authorizedLines
+                    .stream()
+                    .filter(line -> line.getIsRisk())
+                    .collect(Collectors.toSet());
+        } else {
+            filteredLines = authorizedLines
+                    .stream()
+                    .filter(line -> !line.getIsRisk())
+                    .collect(Collectors.toSet());
+        }
         return filteredLines;
     }
 
@@ -51,10 +58,10 @@ public class LineService {
                     Boolean materialCodeCondition = line.getMaterial().getMaterialCode().contains(formData.getMaterialCode());
 
                     Boolean riskDescriptionCondition = true;
-                    if (line.getRisk() == null) {
-                    } else {
-                            if (!formData.getRiskDescription().equals(""))
-                                riskDescriptionCondition = line.getRisk().getRiskDescription().contains(formData.getRiskDescription());
+                    if (!(line.getRisk() == null)) {
+                        if (!formData.getRiskDescription().equals("")) {
+                            riskDescriptionCondition = line.getRisk().getRiskDescription().contains(formData.getRiskDescription());
+                        }
                     }
 
                     Boolean materialFamilyCondition = true;

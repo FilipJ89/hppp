@@ -39,7 +39,7 @@
             <input type="text" th:field="*{materialName} "class="form-control" id="MaterialName" placeholder="Material Name">
             <label class="visually-hidden" for="MaterialName">Material Name</label>
         </div>
-        <div class="col-auto" th:if="${#strings.contains(#httpServletRequest.requestURI, 'risks')}">
+        <div class="col-auto" th:if="${#strings.contains(#httpServletRequest.requestURI, 'risks/update')}">
             <input type="text" th:field="*{riskDescription} "class="form-control" id="RiskDescription" placeholder="Risk Description">
             <label class="visually-hidden" for="RiskDescription">Risk Description</label>
         </div>
@@ -62,7 +62,7 @@
                 </option>
             </select>
         </div>
-        <div class="col-auto">
+        <div class="col-auto" th:if="${!#strings.contains(#httpServletRequest.requestURI, 'new')}">
             <label for="riskLevel">Risk level:</label>
             <select class="form-select" id="riskLevel" name="riskLevel" multiple>
 <!--                <option selected>risk level</option>-->

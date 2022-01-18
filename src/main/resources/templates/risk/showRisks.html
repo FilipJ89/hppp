@@ -16,15 +16,17 @@
 
 <div th:insert="fragments/navbar.html"/>
 
-<div th:insert="fragments/filterForm.html"/>
-
 <div class="container-md mt-4">
     <h3 class="mb-4">Risk Assessment</h3>
-    <span class="table table-striped"> For risk edition of below selected material list click <a th:href="@{'/risks/edit'}"> <button class="btn btn-primary">here</button></a></span>
+    <span class="table table-striped"> For new risk creation click
+        <a th:href="@{'/risks/new'}"> <button class="btn btn-primary">new</button></a></span>
+    <br>
+    <span class="table table-striped"> For edition of existing risks click
+        <a th:href="@{'/risks/update'}"> <button class="btn btn-primary">edit</button></a></span>
 </div>
 
 <div class="container-md mt-3">
-    <h3 class="mb-4">Material List</h3>
+    <h3 class="mb-4">Current risk list</h3>
 </div>
 
 <div class="container-lg">
@@ -64,8 +66,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
-
-<script
 
 </body>
 </html>
