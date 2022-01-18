@@ -22,7 +22,7 @@ import java.util.Set;
 public class DataLoader implements CommandLineRunner {
 
     private final Integer USER_NUMBER_DATALOAD = 3; // manually created below
-    private final Integer MATERIAL_NUMBER_DATALOAD = 10;
+    private final Integer MATERIAL_NUMBER_DATALOAD = 100;
     private final Integer SUPPLIER_NUMBER_DATALOAD = 5;
     private final Integer RISK_NUMBER_DATALOAD = 5;
     private final Integer ACTION_NUMBER_DATALOAD = 5;
@@ -90,7 +90,7 @@ public class DataLoader implements CommandLineRunner {
         while (counter < MATERIAL_NUMBER_DATALOAD) {
             materialRepository.save(Material.builder()
             .materialCode(SAP_NUMBER_BASE + counter)
-            .materialName("Material"+(counter+1))
+            .materialName("Material"+(counter))
             .materialFamily("Family"+random.nextInt(FAMILY_NUMBER_DATALOAD)+1)
             .categories(Category.createRandomEnumSet())
             .plant(Plant.randomPlant())

@@ -17,7 +17,7 @@ public enum RiskLevel {
 
     public static RiskLevel getRandomRiskLevel() {
         Integer riskLevelSize = RiskLevel.values().length;
-        Integer riskLevelOrder = new Random().nextInt(riskLevelSize - 1);
+        Integer riskLevelOrder = new Random().nextInt(riskLevelSize);
         for (RiskLevel r : RiskLevel.values()) {
             if (r.getRiskLevelOrder().equals(riskLevelOrder)) {
                 return r;
