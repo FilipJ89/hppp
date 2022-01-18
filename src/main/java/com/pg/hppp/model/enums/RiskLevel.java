@@ -25,4 +25,13 @@ public enum RiskLevel {
         }
         return null;
     }
+
+    public static RiskLevel getEnumByLabel(String label) {
+        for (RiskLevel r : RiskLevel.values()) {
+            if(r.riskLevelLabel.equals(label)) {
+                return r;
+            }
+        }
+        return null;
+    }
 }

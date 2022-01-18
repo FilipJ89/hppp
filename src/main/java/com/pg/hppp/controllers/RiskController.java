@@ -4,12 +4,14 @@ import com.pg.hppp.model.Line;
 import com.pg.hppp.model.User;
 import com.pg.hppp.services.LineService;
 import com.pg.hppp.services.MaterialFormFilter;
+import com.pg.hppp.services.RiskService;
 import com.pg.hppp.services.TestUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashSet;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class RiskController {
 
     private final LineService lineService;
+    private final RiskService riskService;
     private final TestUser testUser;
     private Set<Line> lastFilteredRiskLines;
 
@@ -49,5 +52,12 @@ public class RiskController {
         model.addAttribute("lines", lastFilteredRiskLines);
 
         return "risk/updateRisks";
+    }
+
+    @PostMapping("/risks/edit")
+    public String submitRisks(MaterialFormFilter filter, Model model) {
+        model.addAttribute("filter", filter);
+        riskService.updateRisks(lastFilteredRiskLines,filter);
+        return "risk/showRisks";
     }
 }

@@ -33,12 +33,29 @@ public class LineService {
         return lineRepository.findAllBySupplierIn(suppliers);
     }
 
+    public Set<Line> getAllLinesWithRisksFilteredForAuthUser(User authUser) {
+        Set<Line> authorizedLines = getAllLinesForAuthUser(authUser);
+        Set<Line> filteredLines = authorizedLines
+                .stream()
+                .filter(line -> line.getIsRisk())
+                .collect(Collectors.toSet());
+
+        return filteredLines;
+    }
+
     public Set<Line> getAllLinesFiltered(Set<Line> startLines, MaterialFormFilter formData) {
         Set<Line> endLines = startLines
                 .stream()
                 .filter(line -> {
                     Boolean materialNameCondition = line.getMaterial().getMaterialName().contains(formData.getMaterialName());
                     Boolean materialCodeCondition = line.getMaterial().getMaterialCode().contains(formData.getMaterialCode());
+
+                    Boolean riskDescriptionCondition = true;
+                    if (line.getRisk() == null) {
+                    } else {
+                            if (!formData.getRiskDescription().equals(""))
+                                riskDescriptionCondition = line.getRisk().getRiskDescription().contains(formData.getRiskDescription());
+                    }
 
                     Boolean materialFamilyCondition = true;
                     if (!formData.getMaterialFamily().equals("")) {
@@ -64,22 +81,11 @@ public class LineService {
                         }
                     }
 
-                    return materialNameCondition && materialCodeCondition && materialFamilyCondition && isRiskCondition && plantCondition && riskLevelCondition;
+                    return materialNameCondition && materialCodeCondition && riskDescriptionCondition &&
+                            materialFamilyCondition && isRiskCondition && plantCondition && riskLevelCondition;
                 })
                 .collect(Collectors.toSet());
 
         return endLines;
     }
-
-    public Set<Line> getAllLinesWithRisksFilteredForAuthUser(User authUser) {
-        Set<Line> authorizedLines = getAllLinesForAuthUser(authUser);
-        Set<Line> filteredLines = authorizedLines
-                .stream()
-                .filter(line -> line.getIsRisk())
-                .collect(Collectors.toSet());
-
-        return filteredLines;
-    }
-
-
 }

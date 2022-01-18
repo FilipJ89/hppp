@@ -30,9 +30,9 @@
 
         <div class="col-auto">
             <label for="isRisk">Risk?:</label>
-            <select class="form-select" id="isRisk" name="riskLevel">
-                <option selected th:value="true">Yes</option>
-                <option th:value="false">No</option>
+            <select class="form-select" id="isRisk" name="isRisk" onChange="enableDisable()">
+                <option selected value="True">Yes</option>
+                <option value="False">No</option>
             </select>
         </div>
 
@@ -54,13 +54,13 @@
 
         <div class="col-auto date" id="datepickerStart">
             <label for="dateStart">Start date:</label>
-            <input type="text" th:field="*{riskStartDate}" class="form-control" id="dateStart">
+            <input type="text" th:field="*{riskStartDate}" th:value="*{riskStartDate}" class="form-control" id="dateStart">
             <span class="input-group-append"></span>
         </div>
 
         <div class="col-auto date" id="datepickerEnd">
             <label for="dateEnd">End date:</label>
-            <input type="text" th:field="*{riskEndDate}" class="form-control" id="dateEnd">
+            <input type="text" th:field="*{riskEndDate}" th:value="*{riskEndDate}" class="form-control" id="dateEnd">
             <span class="input-group-append"></span>
         </div>
 
@@ -124,6 +124,24 @@
         $(function() {
             $('#datepickerEnd').datepicker();
         });
+</script>
+<script type="text/javascript">
+    function enableDisable() {
+        var o = document.getElementById("isRisk");
+        var value = o.options[o.selectedIndex].value;
+
+        if(value == "False") {
+            document.getElementById("riskLevel").disabled = true;
+            document.getElementById("riskDescription").disabled = true;
+            document.getElementById("dateStart").disabled = true;
+            document.getElementById("dateEnd").disabled = true;
+        } else {
+            document.getElementById("riskLevel").disabled = false;
+            document.getElementById("riskDescription").disabled = false;
+            document.getElementById("dateStart").disabled = false;
+            document.getElementById("dateEnd").disabled = false;
+        }
+    }
 </script>
 
 </body>

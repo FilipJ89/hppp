@@ -39,6 +39,10 @@
             <input type="text" th:field="*{materialName} "class="form-control" id="MaterialName" placeholder="Material Name">
             <label class="visually-hidden" for="MaterialName">Material Name</label>
         </div>
+        <div class="col-auto" th:if="${#strings.contains(#httpServletRequest.requestURI, 'risks')}">
+            <input type="text" th:field="*{riskDescription} "class="form-control" id="RiskDescription" placeholder="Risk Description">
+            <label class="visually-hidden" for="RiskDescription">Risk Description</label>
+        </div>
         <div class="col-auto">
             <label for="materialFamily">Material families:</label>
             <select class="form-select" id="materialFamily" name="materialFamily" multiple>

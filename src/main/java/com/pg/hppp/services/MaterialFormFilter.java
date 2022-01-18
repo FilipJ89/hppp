@@ -1,6 +1,7 @@
 package com.pg.hppp.services;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -27,10 +28,12 @@ public class MaterialFormFilter {
     private String riskDescription = "";
 
     @Builder.Default
-    private LocalDate riskStartDate = LocalDate.now();
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
+    private LocalDate riskStartDate = null;
 
     @Builder.Default
-    private LocalDate riskEndDate = LocalDate.now();
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
+    private LocalDate riskEndDate = null;
 
     @Builder.Default
     private String plant = "";
